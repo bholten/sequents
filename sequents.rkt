@@ -29,8 +29,6 @@
                 ...)
          init-state))]))
 
-
-
 ;; Test:
 (define m (automaton init
                     [init : (c -> more)]

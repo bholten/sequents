@@ -13,9 +13,9 @@
            (syntax-rules (accept ->)
              [(_ accept)
               (lambda (stm out)
-                (== out (null? stm)))]
+                (== out #t))]
              [(_ (label -> target) (... ...))
-              (λ (stm out)
+              (lambda (stm out)
                 (conde
                   [(== stm null) (== out #f)]
                   [(fresh (a b)
@@ -29,9 +29,14 @@
          init-state))]))
 
 ;; Test
-(define m (automaton/kanren init
-                            [init : ('c -> more)]
-                            [more : ('a -> more)
-                                  ('d -> more)
-                                  ('r -> end)]
-                            [end : accept]))
+(define m/k (automaton/kanren init
+                              [init : ('c -> more)]
+                              [more : ('a -> more)
+                                      ('d -> more)
+                                      ('r -> end)]
+                              [end : accept]))
+
+;; (run 10 (q) (m/k q #f))
+;; (run 1 (q) (m/k '(a c d r) q))
+;; (run 1 (q)  (m/k '(c a d a d r) q))
+;; (run 1 (q) (m/k '(c a d a d r) q)) ;; should be #t
