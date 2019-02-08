@@ -1,6 +1,7 @@
 #lang racket
 
-(provide automaton)
+(provide automaton
+         defautomaton)
 
 (define-syntax automaton
   (syntax-rules (:)
@@ -29,12 +30,7 @@
                 ...)
          init-state))]))
 
-;; Test:
-(define m (automaton init
-                    [init : (c -> more)]
-                    [more : (a -> more)
-                            (d -> more)
-                            (r -> end)]
-                    [end : accept]))
-(m '(c a d a d r))
-(m '(c a d a d r a))
+(define-syntax defautomaton
+  (syntax-rules ()
+    [(defautomaton name body body* ...)
+     (define name (automaton body body* ...))]))
